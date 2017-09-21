@@ -14,7 +14,7 @@ public class GesturesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_page2, container, false);
+        View rootView = inflater.inflate(R.layout.gesturesfragment, container, false);
         return rootView;
     }
 
