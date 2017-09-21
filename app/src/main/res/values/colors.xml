@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- For PagerTitleStrip -->
+    <color name="azure">#33B5E5</color>
+    <color name="white">#FFF</color>
+
+    <!-- For pages of ViewPager -->
+    <color name="pageColor1">#FFF59D</color>
+    <color name="pageColor2">#FFCC80</color>
+    <color name="pageColor3">#FFAB91</color>
+</resources>
