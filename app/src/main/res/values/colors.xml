@@ -7,7 +7,10 @@
     <!-- For PagerTitleStrip -->
     <color name="azure">#33B5E5</color>
     <color name="white">#FFF</color>
-
+    <color name="watermelon">#FF3B3f</color>
+    <color name="Neutral">#EFEFEF</color>
+    <color name="Carbon">#A9A9A9</color>
+    <color name="Sky">#CAEBF2</color>
     <!-- For pages of ViewPager -->
     <color name="pageColor1">#FFF59D</color>
     <color name="pageColor2">#FFCC80</color>

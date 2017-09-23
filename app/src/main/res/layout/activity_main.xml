@@ -14,14 +14,14 @@
     <android.support.design.widget.TabLayout
         app:tabTextAppearance="@style/TabLayoutStyle"
 
-        app:tabTextColor="@color/colorPrimary"
+        app:tabTextColor="#6B7A8F"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorPrimaryDark"
-        app:tabIndicatorColor="@android:color/white"
+        app:tabSelectedTextColor="@color/watermelon"
+        app:tabIndicatorColor="@color/watermelon"
         android:id="@+id/tab_layout"
         android:layout_height="200px"
         android:layout_width="match_parent"
-        android:background="?attr/colorAccent"
+        android:background="@color/Sky"
         />
 
     <android.support.v4.view.ViewPager
