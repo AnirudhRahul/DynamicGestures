@@ -11,6 +11,7 @@
     <color name="Neutral">#EFEFEF</color>
     <color name="Carbon">#A9A9A9</color>
     <color name="Sky">#CAEBF2</color>
+    <color name="BlueBerry">#687A8F</color>
     <!-- For pages of ViewPager -->
     <color name="pageColor1">#FFF59D</color>
     <color name="pageColor2">#FFCC80</color>

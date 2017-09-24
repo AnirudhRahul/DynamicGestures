@@ -14,12 +14,12 @@
     <android.support.design.widget.TabLayout
         app:tabTextAppearance="@style/TabLayoutStyle"
 
-        app:tabTextColor="#6B7A8F"
+        app:tabTextColor="@color/BlueBerry"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/watermelon"
         app:tabIndicatorColor="@color/watermelon"
         android:id="@+id/tab_layout"
-        android:layout_height="200px"
+        android:layout_height="60dp"
         android:layout_width="match_parent"
         android:background="@color/Sky"
         />

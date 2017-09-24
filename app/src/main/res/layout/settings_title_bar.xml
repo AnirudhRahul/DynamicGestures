@@ -2,22 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:theme="@style/AppTheme.NoActionBar"
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="67.5dp">
-        <Button
-            android:id="@+id/lel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text=""
-            android:background="@android:color/transparent"
-            android:layout_alignParentRight="true"
-            />
+        android:layout_height="180px"
+        android:background="@color/Sky"
+        >
         <ImageView
-            android:paddingRight="12dp"
-            android:paddingLeft="5dp"
-            android:layout_width="73dp"
+            android:paddingRight="30px"
+            android:paddingLeft="20px"
+            android:layout_width="194px"
             android:layout_height="match_parent"
             android:id="@+id/appIcon"
             android:src="@mipmap/ic_launcher"

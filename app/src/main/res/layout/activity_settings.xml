@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/Sky"
+        >
+        <ImageButton
+            android:paddingLeft="0dp"
+            android:background="@color/Sky"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/backbtn"
+            android:id="@+id/backbtn"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <ImageView
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:id="@+id/appIcon"
+            android:src="@mipmap/ic_launcher"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="42dp"
+            android:layout_marginStart="42dp" />
+        <TextView
+            android:layout_width="1000dp"
+            android:layout_height="match_parent"
+            android:textSize="27sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/BlueBerry"
+            android:text="App Name"
+            android:id="@+id/appName"
+            android:fontFamily="serif"
+            android:elevation="1dp"
+            android:layout_marginLeft="83dp"
+            android:layout_marginStart="83dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/backbtn"
+            android:layout_toEndOf="@+id/backbtn" />
+    </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId 'org.weibeld.example.tabs'
-        minSdkVersion 16
+        minSdkVersion 13
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -29,5 +29,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v13:24.2.1'
     compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
 }
