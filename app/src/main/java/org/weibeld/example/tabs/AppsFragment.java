@@ -12,6 +12,7 @@ import android.widget.ListView;
 import org.weibeld.example.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /* Fragment used as page 1 */
@@ -25,10 +26,13 @@ public class AppsFragment extends Fragment {
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> pkgAppsList = getActivity().getApplicationContext().getPackageManager().queryIntentActivities( mainIntent, 0);
         ArrayList<App> apps=new ArrayList<>();
+        int i=-1;
         for(ResolveInfo e:pkgAppsList){
+            i++;
             //Trust me it works ok
-            apps.add(new App(e.loadLabel(getActivity().getApplicationContext().getPackageManager()).toString(),e.loadIcon(getActivity().getApplicationContext().getPackageManager())));
+            apps.add(new App(e.loadLabel(getActivity().getApplicationContext().getPackageManager()).toString(),e.loadIcon(getActivity().getApplicationContext().getPackageManager()),i));
         }
+        Collections.sort(apps);
         AppAdapter adapter=new AppAdapter(getActivity().getApplicationContext(), apps);
         listView.setAdapter(adapter);
         return rootView;

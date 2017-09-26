@@ -13,14 +13,18 @@
         >
         <ImageButton
             android:paddingLeft="0dp"
+            android:paddingRight="60dp"
             android:background="@color/Sky"
             android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:src="@drawable/backbtn"
             android:id="@+id/backbtn"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/appIcon"
+            android:layout_alignEnd="@+id/appIcon" />
         <ImageView
             android:paddingRight="0dp"
             android:paddingLeft="0dp"
@@ -46,8 +50,8 @@
             android:id="@+id/appName"
             android:fontFamily="serif"
             android:elevation="1dp"
-            android:layout_marginLeft="83dp"
-            android:layout_marginStart="83dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/backbtn"
             android:layout_toEndOf="@+id/backbtn" />
