@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.weibeld.example.R;
@@ -22,6 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        //Set up the top activity bar
         ImageButton backButton=(ImageButton) findViewById(R.id.backbtn);
         ImageView appIconView=(ImageView) findViewById(R.id.appIcon);
         TextView appNameView=(TextView) findViewById(appName);
@@ -37,10 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
         drawable=AppInfo.loadIcon(getApplicationContext().getPackageManager());
         appNameView.setText(appName);
         appIconView.setImageDrawable(drawable);
-
-
-
-
+        //Back Button setup
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,6 +47,11 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        //List View setup
+        ListView settingsList=(ListView)findViewById(R.id.settingsList);
+
+
+
     }
 
 }

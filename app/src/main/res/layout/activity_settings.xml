@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     android:theme="@style/AppTheme.NoActionBar.NoActionBar"
     >
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@color/Sky"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/layout1"
+        android:layout_alignParentStart="true">
+
         <ImageButton
             android:paddingLeft="0dp"
             android:paddingRight="60dp"
@@ -25,6 +31,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignRight="@+id/appIcon"
             android:layout_alignEnd="@+id/appIcon" />
+
+
         <ImageView
             android:paddingRight="0dp"
             android:paddingLeft="0dp"
@@ -55,8 +63,30 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/backbtn"
             android:layout_toEndOf="@+id/backbtn" />
-    </RelativeLayout>
 
+
+
+    </RelativeLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/layout1"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
+
+
+ <ListView
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:id="@+id/settingsList"
+     >
+
+
+
+ </ListView>
+
+
+</RelativeLayout>
 
 
 

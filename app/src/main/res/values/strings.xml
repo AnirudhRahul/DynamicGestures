@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Tabs Example</string>
+    <string name="app_name">Dynamic Gestures</string>
     <string name="title_activity_settings">SettingsActivity</string>
 </resources>
