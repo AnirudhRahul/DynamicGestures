@@ -3,8 +3,10 @@ package org.weibeld.example.tabs;
 import android.app.AppOpsManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -41,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         startService(new Intent(this, ServiceExample.class));
 
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        BroadcastReceiver mReceiver = new BroadCast();
+        registerReceiver(mReceiver, filter);
 
         // Connect the ViewPager to our custom PagerAdapter. The PagerAdapter supplies the pages
         // (fragments) to the ViewPager, which the ViewPager needs to display.

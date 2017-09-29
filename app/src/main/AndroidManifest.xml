@@ -8,8 +8,14 @@
       a theme inheriting from Theme.AppCompat.*.NoActionBar. This prevents the default ActionBar
       from showing up.
     -->
+    <receiver android:name=".BootBroadcastReceiver" >
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+    </receiver>
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
     <application
         android:allowBackup="true"
