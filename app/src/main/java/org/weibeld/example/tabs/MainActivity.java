@@ -15,7 +15,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
 
 import org.weibeld.example.R;
 
@@ -28,20 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
     // The fragments that are used as the individual pages
     private final Fragment[] PAGES = new Fragment[] {new AppsFragment(), new GesturesFragment(), new Analytics()};
-
+    private BroadcastReceiver mReceiver = new BroadCast();
     // The ViewPager is responsible for sliding pages (fragments) in and out upon user input
     private ViewPager myViewPager;
-
+    //HashMap<GestureName, HashMap<InitialAppIndex,FinalAppIndex>>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isAccessGranted()) {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivity(intent);
         }
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         startService(new Intent(this, ServiceExample.class));
+        getSupportActionBar().setElevation(0);
+       // getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#354777\">" + getString(R.string.app_name) + "</font>"));
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -58,9 +59,17 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(myViewPager);
 
+
+
+
     }
-
-
+    @Override
+    protected void onStop()
+    {
+        if(mReceiver.isOrderedBroadcast())
+        unregisterReceiver(mReceiver);
+        super.onStop();
+    }
     /* PagerAdapter for supplying the ViewPager with the pages (fragments) to display. */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 

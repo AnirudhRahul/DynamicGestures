@@ -30,6 +30,8 @@ public class ServiceExample extends Service {
     @Override
         public int onStartCommand(Intent intent, int flags, int startId)
         {
+
+
             canceled=false;
             final Timer timer  =  new Timer();
             int i=0;
@@ -40,9 +42,10 @@ public class ServiceExample extends Service {
                 if(canceled)
                     timer.cancel();
 
-               printForegroundTask();
+
+                 //   printForegroundTask();
                 }
-            }, 2000, 6000);  // every 6 seconds
+            }, 1000, 1000);  // every 6 seconds
             return START_STICKY;
         }
 

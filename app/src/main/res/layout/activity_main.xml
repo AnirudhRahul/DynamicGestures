@@ -8,20 +8,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/AppTheme.NoActionBar"
+    android:theme="@style/AppTheme.Custom"
     tools:context="org.weibeld.example.tabs.MainActivity">
 
     <android.support.design.widget.TabLayout
         app:tabTextAppearance="@style/TabLayoutStyle"
-
-        app:tabTextColor="@color/BlueBerry"
+        android:elevation="5dp"
+        app:tabTextColor="#9FA8DA"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/watermelon"
-        app:tabIndicatorColor="@color/watermelon"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorColor="@color/white"
         android:id="@+id/tab_layout"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
+        android:fontFamily="sans-serif"
+
         android:layout_width="match_parent"
-        android:background="@color/Sky"
+        android:background="@color/ExtraBlueBerry"
         />
 
     <android.support.v4.view.ViewPager

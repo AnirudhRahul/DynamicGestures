@@ -5,30 +5,66 @@
     android:layout_below="@+id/layout1"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true">
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@android:color/transparent"
-        android:id="@+id/selectAppforGesture"
-        />
 
     <TextView
         android:id="@+id/gestureName"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:paddingLeft="15dp"
-        android:fontFamily="serif"
+        android:fontFamily="sans-serif"
         android:text="Gesture A"
+        android:textColor="@color/AppTitles"
         android:gravity="center_vertical"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
+
     <Switch
         android:id="@+id/gestureUsed"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:paddingRight="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="60dp"
 
+        android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:paddingRight="50dp"
+
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="67.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/appSelectorSection"
+        android:layout_marginTop="48dp">
+        <Button
+            android:id="@+id/selectAppBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text=""
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            />
+        <ImageView
+            android:paddingRight="12dp"
+            android:paddingLeft="5dp"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:id="@+id/selectAppIcon"
+            android:src="@mipmap/android"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            />
+        <TextView
+            android:textColor="@color/AppTitles"
+            android:layout_toRightOf="@id/selectAppIcon"
+            android:layout_width="1000dp"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:gravity="center_vertical"
+            android:text="No App Selected"
+            android:id="@+id/selectAppName"
+            android:fontFamily="sans-serif"
+            android:elevation="1dp" />
+    </RelativeLayout>
 
 </RelativeLayout>

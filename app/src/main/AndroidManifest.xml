@@ -8,26 +8,29 @@
       a theme inheriting from Theme.AppCompat.*.NoActionBar. This prevents the default ActionBar
       from showing up.
     -->
-    <receiver android:name=".BootBroadcastReceiver" >
+    <receiver android:name=".BootBroadcastReceiver">
         <intent-filter>
             <action android:name="android.intent.action.BOOT_COMPLETED" />
         </intent-filter>
     </receiver>
+
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-
-        <service android:name=".tabs.ServiceExample"/>
+        android:theme="@style/AppTheme">
+        <service android:name=".tabs.ServiceExample" />
 
         <activity android:name=".tabs.MainActivity">
-            <application android:theme="@android:style/Theme.Black.NoTitleBar" />
+            <application/>
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,12 +41,15 @@
         <activity
             android:name=".tabs.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".tabs.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.weibeld.example.tabs.MainActivity" />
         </activity>
+        <activity
+            android:name=".tabs.AppSelectorSettings"
+            android:label="@string/title_activity_app_selector_settings"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
