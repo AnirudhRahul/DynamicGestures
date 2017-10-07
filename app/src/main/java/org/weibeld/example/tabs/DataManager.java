@@ -1,6 +1,8 @@
 package org.weibeld.example.tabs;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.io.File;
@@ -11,20 +13,29 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by user on 9/30/2017.
  */
 
 public class DataManager {
-    private HashMap<String, HashMap<Integer,Integer>> masterList=new HashMap<>();
-    private HashMap<String, HashMap<Integer,Boolean>> BooleanMasterList=new HashMap<>();
+    //Use package Name everywher but menus
+    private HashMap<String, HashMap<String,String>> masterList=new HashMap<>();
+    private HashMap<String, HashMap<String,Boolean>> BooleanMasterList=new HashMap<>();
+    PackageManager pm;
     private Context context;
     public DataManager(Context c){context=c;}
-    public void AddConnection(String gesture, int startingApp, int endingApp) throws IOException{
-        HashMap<Integer,Integer> temp=masterList.remove(gesture);
-
+    public void AddConnection(String gesture, String startingApp, String endingApp) throws IOException{
+        pm = context.getPackageManager();
+        try {
+            UpdateMap();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        HashMap<String,String> temp=masterList.remove(gesture);
         temp.put(startingApp,endingApp);
         masterList.put(gesture,temp);
         WriteMap();
@@ -33,7 +44,7 @@ public class DataManager {
         if(!IsMapInitialized()) {
             ArrayList<String> list = returnGestureList();
             for (String e : list)
-                masterList.put(e, new HashMap<Integer, Integer>());
+                masterList.put(e, new HashMap<String, String>());
             WriteMap();
         }
         else{
@@ -49,7 +60,7 @@ public class DataManager {
             keyset.removeAll(intersection);
             gesture.removeAll(intersection);
             for(String e:gesture){
-                masterList.put(e, new HashMap<Integer, Integer>());
+                masterList.put(e, new HashMap<String, String>());
             }
             for(String e:keyset){
                 masterList.remove(e);
@@ -60,7 +71,7 @@ public class DataManager {
 
         }
     }
-    public HashMap<String, HashMap<Integer,Integer>> returnMap() throws IOException,ClassNotFoundException{
+    public HashMap<String, HashMap<String,String>> returnMap() throws IOException,ClassNotFoundException{
         UpdateMap();
         return masterList;
     }
@@ -98,7 +109,7 @@ public class DataManager {
         if(!IsBooleanMapInitialized()) {
             ArrayList<String> list = returnGestureList();
             for (String e : list)
-                BooleanMasterList.put(e, new HashMap<Integer, Boolean>());
+                BooleanMasterList.put(e, new HashMap<String, Boolean>());
             WriteBooleanMap();
         }
         else{
@@ -114,7 +125,7 @@ public class DataManager {
             keyset.removeAll(intersection);
             gesture.removeAll(intersection);
             for(String e:gesture){
-                BooleanMasterList.put(e, new HashMap<Integer, Boolean>());
+                BooleanMasterList.put(e, new HashMap<String, Boolean>());
             }
             for(String e:keyset){
                 BooleanMasterList.remove(e);
@@ -125,7 +136,7 @@ public class DataManager {
 
         }
     }
-    public HashMap<String, HashMap<Integer,Boolean>> returnBooleanMap() throws IOException,ClassNotFoundException{
+    public HashMap<String, HashMap<String,Boolean>> returnBooleanMap() throws IOException,ClassNotFoundException{
         UpdateBooleanMap();
         return BooleanMasterList;
     }
@@ -147,14 +158,15 @@ public class DataManager {
         outputStream.flush();
         outputStream.close();
     }
-    public void AddToBooleanMap(String gesture, int app, boolean used) throws IOException,ClassNotFoundException{
+    public void AddToBooleanMap(String gesture, String app, boolean used) throws IOException,ClassNotFoundException{
         UpdateBooleanMap();
         Log.v("BoolMap","Before:"+BooleanMasterList);
+        BooleanMasterList.get(gesture).remove(app);
         BooleanMasterList.get(gesture).put(app,used);
         WriteBooleanMap();
         Log.v("BoolMap","After:"+BooleanMasterList);
-
     }
+
 
 
 
@@ -213,6 +225,7 @@ public class DataManager {
         ArrayList<String> temp= (ArrayList<String>)is.readObject();
         fis.close();
         is.close();
+        Collections.sort(temp);
         return temp;
     }
     public void appendGestureList(ArrayList<String> ListToAdd) throws IOException, ClassNotFoundException{
@@ -220,5 +233,39 @@ public class DataManager {
         temp.addAll(ListToAdd);
         WriteGesturesList(temp);
     }
+    public void initializeAppList() throws IOException {
+        PackageManager pm = context.getPackageManager();
+        int size=pm.getInstalledApplications(0).size();
+        boolean appList[] = new boolean[size];
+        FileOutputStream fos = context.openFileOutput("appList", context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(appList);
+        os.close();
+        fos.close();
+    }
+    public boolean[] returnAppList()  {
+        try{
+        FileInputStream fis = context.openFileInput("appList");
+        ObjectInputStream inputStreamStream = new ObjectInputStream(fis);
+        return (boolean[])inputStreamStream.readObject();}catch (Exception e){e.printStackTrace();}
+        return null;
+    }
+    public boolean[] filterAppList(String input){
+        try {
+            initializeAppList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<ApplicationInfo> appList=pm.getInstalledApplications(0);
+        boolean[] filteredList=returnAppList();
+        int i=0;
+        for(ApplicationInfo e:appList){
+            filteredList[i]=e.loadLabel(pm).toString().contains(input);
+            i++;
+        }
+        return filteredList;
+    }
+
 
 }

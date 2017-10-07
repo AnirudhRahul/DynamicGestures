@@ -1,10 +1,11 @@
-package org.weibeld.example.tabs;
+package org.weibeld.example.tabs.Adapters;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +21,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import org.weibeld.example.R;
+import org.weibeld.example.tabs.DataManager;
+import org.weibeld.example.tabs.Fragments_and_UI.AppSelectorSettings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,16 +40,16 @@ public class SettingAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     DataManager dataManager;
     private ArrayList<String> gestures=new ArrayList<>();
-    private HashMap<String,HashMap<Integer,Integer>> masterList=new HashMap<>();
-    private HashMap<String,HashMap<Integer,Boolean>> BooleanMasterList=new HashMap<>();
-    private int initialApp;
-    public SettingAdapter(Context context, int initialApp, ArrayList<String> gestures, HashMap<String,HashMap<Integer,Integer>> masterList){
+    private HashMap<String,HashMap<String,String>> masterList=new HashMap<>();
+    private HashMap<String,HashMap<String,Boolean>> BooleanMasterList=new HashMap<>();
+    private String initialAppPackageName;
+    public SettingAdapter(Context context, String initialAppPackageName, ArrayList<String> gestures){
         dataManager=new DataManager(context);
         this.context=context;
         this.gestures=gestures;
-        this.initialApp=initialApp;
-        try{BooleanMasterList=dataManager.returnBooleanMap();}catch (Exception e){e.printStackTrace();}
-        this.masterList=masterList;
+        this.initialAppPackageName=initialAppPackageName;
+        try{masterList=dataManager.returnMap();BooleanMasterList=dataManager.returnBooleanMap();}catch (Exception e){Log.v("SettingAdapter","Error");e.printStackTrace();}
+        Collections.sort(gestures);
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -74,10 +78,10 @@ public class SettingAdapter extends BaseAdapter {
         TextView Gesture=(TextView)rowView.findViewById(R.id.gestureName);
         Gesture.setText(gestures.get(i));
         Button selectAppBtn=(Button)rowView.findViewById(R.id.selectAppBtn);
-
+        Log.v("SettingAdapter",gestures.get(i)+"\t"+masterList.get(gestures.get(i)).get(initialAppPackageName));
         final RelativeLayout AppSelector=(RelativeLayout)rowView.findViewById(R.id.appSelectorSection);
         Switch UsingGesture=(Switch)rowView.findViewById(R.id.gestureUsed);
-        UsingGesture.setChecked(BooleanMasterList.get(gestures.get(i)).containsKey(initialApp)&&BooleanMasterList.get(gestures.get(i)).get(initialApp));
+        UsingGesture.setChecked(BooleanMasterList.get(gestures.get(i)).containsKey(initialAppPackageName)&&BooleanMasterList.get(gestures.get(i)).get(initialAppPackageName));
         if(!UsingGesture.isChecked())
             collapse(AppSelector,1);
 
@@ -90,15 +94,18 @@ public class SettingAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 collapse(AppSelector,1);
                 Log.v("HEIGHTU",""+AppSelector.getHeight());
-                try{dataManager.AddToBooleanMap(gestures.get(a),initialApp,isChecked); Log.v("mapu",dataManager.returnBooleanMap().toString());}catch(Exception e){e.printStackTrace();}
+                try{dataManager.AddToBooleanMap(gestures.get(a),initialAppPackageName,isChecked); Log.v("mapu",dataManager.returnBooleanMap().toString());}catch(Exception e){Log.v("SettingAdapter","Error");e.printStackTrace();}
 
-                int index=-1;
+                String curPackageName="";
                 try{
-                    index=masterList.get(gestures.get(a)).get(initialApp);}catch (Exception e){}
-                if(index!=-1&&isChecked) {
-                    setRow(index, selectedAppIcon, selectedAppName);
-                    //    Doublecollapse(AppSelector,1);
+                    curPackageName=masterList.get(gestures.get(a)).get(initialAppPackageName);
+                    if(isChecked)
+                        setRow(masterList.get(gestures.get(a)).get(initialAppPackageName), selectedAppIcon, selectedAppName);
                 }
+                catch (Exception e){
+
+                }
+
 
 
             }
@@ -106,48 +113,63 @@ public class SettingAdapter extends BaseAdapter {
         selectAppBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v("gestures",gestures.get(a));
                 Intent i=new Intent(parent.getContext(), AppSelectorSettings.class);
                 i.putExtra("GestureIndex",a);
-                i.putExtra("StartingApp",initialApp);
+                i.putExtra("StartingApp",initialAppPackageName);
                 parent.getContext().startActivity(i);
             }
         });
 
 
-        int index=-1;
+        String curPackageName="";
         try{
-        index=masterList.get(gestures.get(i)).get(initialApp);}catch (Exception e){}
-        if(index!=-1&&UsingGesture.isChecked()) {
-            setRow(index, selectedAppIcon, selectedAppName);
-            Doublecollapse(AppSelector,1);
+        curPackageName=masterList.get(gestures.get(i)).get(initialAppPackageName);
+            if(UsingGesture.isChecked()) {
+                setRow(masterList.get(gestures.get(i)).get(initialAppPackageName), selectedAppIcon, selectedAppName);
+                Doublecollapse(AppSelector,1);
+            }
         }
+        catch (Exception e){
+
+        }
+
 
 
 
 
         return rowView;
     }
-    public void setRow(int index,ImageView AppIcon, TextView AppName){
-        AppIcon.setImageDrawable(getAppDrawable(index));
-        AppName.setText(getAppName(index));
+    public void setRow(String initialAppPackageName,ImageView AppIcon, TextView AppName){
+        AppIcon.setImageDrawable(getAppDrawable(initialAppPackageName));
+        AppName.setText(getAppName(initialAppPackageName));
     }
 
-    public Drawable getAppDrawable(int index){
-        Drawable drawable=null;
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> packages = context.getPackageManager().queryIntentActivities( mainIntent, 0);
-        ResolveInfo AppInfo=packages.get(index);
-        drawable=AppInfo.loadIcon(context.getPackageManager());
-        return drawable;
+    public Drawable getAppDrawable(String packageName){
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        for(ApplicationInfo e:appList){
+            if((e.flags&ApplicationInfo.FLAG_SYSTEM )!=0)
+                continue;
+            if(packageName.equals(e.packageName)){
+                return e.loadIcon(pm);
+            }
+        }
+        return null;
     }
-    public String getAppName(int index){
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> packages = context.getPackageManager().queryIntentActivities( mainIntent, 0);
-        ResolveInfo AppInfo=packages.get(index);
-        return AppInfo.loadLabel(context.getPackageManager()).toString();
+    public String getAppName(String packageName){
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        for(ApplicationInfo e:appList){
+            if((e.flags&ApplicationInfo.FLAG_SYSTEM )!=0)
+                continue;
+            if(packageName.equals(e.packageName)){
+                return (String)e.loadLabel(pm);
+            }
+        }
+        return null;
     }
+
 
     public static void collapse(final View v, int duration) {
         final boolean expand = v.getVisibility()!=View.VISIBLE;

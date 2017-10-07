@@ -1,4 +1,4 @@
-package org.weibeld.example.tabs;
+package org.weibeld.example.tabs.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.weibeld.example.R;
+import org.weibeld.example.tabs.App;
+import org.weibeld.example.tabs.Fragments_and_UI.SettingsActivity;
 
 import java.util.ArrayList;
 
@@ -49,7 +51,7 @@ public class AppAdapter extends BaseAdapter {
         ImageView appIcon=(ImageView) rowView.findViewById(R.id.appIcon);
         final Button appBtn=(Button) rowView.findViewById(R.id.appBtn);
         App app=(App) getItem(i);
-        final int a=app.getIndex();
+        final String a=app.getPackagename();
         appBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

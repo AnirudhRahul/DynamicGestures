@@ -1,4 +1,4 @@
-package org.weibeld.example.tabs;
+package org.weibeld.example.tabs.Fragments_and_UI;
 
 import android.app.AppOpsManager;
 import android.app.Fragment;
@@ -17,6 +17,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import org.weibeld.example.R;
+import org.weibeld.example.tabs.BroadCast;
+import org.weibeld.example.tabs.DataManager;
+import org.weibeld.example.tabs.ServiceExample;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +38,19 @@ public class MainActivity extends AppCompatActivity {
     //HashMap<GestureName, HashMap<InitialAppIndex,FinalAppIndex>>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DataManager dataManager=new DataManager(getApplicationContext());
+        try {
+            dataManager.UpdateMap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            dataManager.initializeAppList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (!isAccessGranted()) {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivity(intent);
@@ -110,5 +128,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+
 
 }

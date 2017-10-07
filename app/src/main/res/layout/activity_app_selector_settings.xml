@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.weibeld.example.tabs.AppSelectorSettings">
+    tools:context="org.weibeld.example.tabs.Fragments_and_UI.AppSelectorSettings">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

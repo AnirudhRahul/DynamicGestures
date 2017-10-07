@@ -17,9 +17,12 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -29,27 +32,31 @@
         android:theme="@style/AppTheme">
         <service android:name=".tabs.ServiceExample" />
 
-        <activity android:name=".tabs.MainActivity">
-            <application/>
+        <application/>
 
-            <intent-filter>
+        <activity
+            android:name=".tabs.Fragments_and_UI.MainActivity"
+            android:label="@string/title_activity_app_selector_settings">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
-            android:name=".tabs.SettingsActivity"
+            android:name=".tabs.Fragments_and_UI.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.weibeld.example.tabs.MainActivity" />
+                android:value="org.weibeld.example.tabs.Fragments_and_UI.MainActivity" />
         </activity>
         <activity
-            android:name=".tabs.AppSelectorSettings"
+            android:name=".tabs.Fragments_and_UI.AppSelectorSettings"
             android:label="@string/title_activity_app_selector_settings"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

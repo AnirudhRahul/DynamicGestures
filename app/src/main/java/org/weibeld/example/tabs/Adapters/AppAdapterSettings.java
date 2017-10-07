@@ -1,4 +1,4 @@
-package org.weibeld.example.tabs;
+package org.weibeld.example.tabs.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.weibeld.example.R;
+import org.weibeld.example.tabs.App;
+import org.weibeld.example.tabs.DataManager;
+import org.weibeld.example.tabs.Fragments_and_UI.SettingsActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,12 +24,12 @@ public class AppAdapterSettings extends BaseAdapter {
     private ArrayList<App> apps;
     private LayoutInflater inflater;
     private int gestureIndex;
-    private int starterApp;
-    public AppAdapterSettings(Context context, ArrayList<App> apps,int gestureIndex, int starterApp){
+    private String starterAppPackageName;
+    public AppAdapterSettings(Context context, ArrayList<App> apps,int gestureIndex, String starterAppPackageName){
         this.context=context;
         this.apps=apps;
         this.gestureIndex=gestureIndex;
-        this.starterApp=starterApp;
+        this.starterAppPackageName=starterAppPackageName;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -51,12 +54,12 @@ public class AppAdapterSettings extends BaseAdapter {
         ImageView appIcon=(ImageView) rowView.findViewById(R.id.appIcon);
         final Button appBtn=(Button) rowView.findViewById(R.id.appBtn);
         App app=(App) getItem(i);
-        final int a=app.getIndex();
+        final String a=app.getPackagename();
         appBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(parent.getContext(), SettingsActivity.class);
-                i.putExtra("AppId",starterApp);
+                i.putExtra("AppId",starterAppPackageName);
 
                 DataManager dataManager=new DataManager(parent.getContext());
                 ArrayList<String> gestures=new ArrayList<>();
@@ -64,8 +67,7 @@ public class AppAdapterSettings extends BaseAdapter {
                     gestures.addAll(dataManager.returnGestureList());
                     String gestureName=gestures.get(gestureIndex);
                     Log.v("IMPORTANT",gestureName);
-                    dataManager.UpdateMap();
-                    dataManager.AddConnection(gestureName, starterApp, a);
+                    dataManager.AddConnection(gestureName, starterAppPackageName, a);
                     Log.v("IMPORTANT",dataManager.returnMap().toString());
 
                 }catch (ClassNotFoundException e){e.printStackTrace();}catch (IOException e){e.printStackTrace();}

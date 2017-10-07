@@ -10,9 +10,19 @@ public class App implements Comparable<App> {
     private String name;
     private Drawable icon;
     private int index;
+    private String packagename;
+
+    public String getPackagename() {
+        return packagename;
+    }
+
+    public void setPackagename(String packagename) {
+        this.packagename = packagename;
+    }
 
     public int getIndex() {
         return index;
+
     }
 
     public void setIndex(int index) {
@@ -35,9 +45,10 @@ public class App implements Comparable<App> {
         this.icon = icon;
     }
 
-    public App(String name, Drawable icon, int index){
+    public App(String packagename,String name, Drawable icon, int index){
+        this.packagename=packagename;
         this.name=name;
-        this.icon=icon;
+        this.icon = icon;
         this.index=index;
     }
 

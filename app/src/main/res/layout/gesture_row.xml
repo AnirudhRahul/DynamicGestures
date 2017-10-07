@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="50dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Gesture Name"
+        android:gravity="center_vertical"
+        android:textSize="27sp"
+        android:textColor="@color/AppTitles"
+        android:paddingLeft="15dp"
+        android:fontFamily="sans-serif"
+        android:id="@+id/gestureName_Checkbox"
+        />
+    <CheckBox
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:paddingRight="30dp"
+        android:scaleX="1.1"
+        android:scaleY="1.1"
+        android:theme="@style/AppTheme.NoActionBar"
+        android:id="@+id/gesture_Checkbox"
+        />
+
+</RelativeLayout>

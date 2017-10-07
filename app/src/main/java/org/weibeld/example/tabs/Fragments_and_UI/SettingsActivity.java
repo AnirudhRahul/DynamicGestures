@@ -1,7 +1,8 @@
-package org.weibeld.example.tabs;
+package org.weibeld.example.tabs.Fragments_and_UI;
 
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.weibeld.example.R;
+import org.weibeld.example.tabs.Adapters.SettingAdapter;
+import org.weibeld.example.tabs.DataManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 import static org.weibeld.example.R.id.appName;
@@ -34,10 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
         ImageView appIconView=(ImageView) findViewById(R.id.appIcon);
         TextView appNameView=(TextView) findViewById(appName);
         Intent intent=getIntent();
-        int index =intent.getIntExtra("AppId",-1);
+        String packageName =intent.getStringExtra("AppId");
 
-        String appName=getAppName(index);
-        Drawable drawable=getAppDrawable(index);
+        String appName=getAppName(packageName);
+        Drawable drawable=getAppDrawable(packageName);
 
         appNameView.setText(appName);
         appIconView.setImageDrawable(drawable);
@@ -52,15 +55,13 @@ public class SettingsActivity extends AppCompatActivity {
         //List View setup
         ListView settingsList=(ListView)findViewById(R.id.settingsList);
         ArrayList<String> gesture=new ArrayList<>();
-        HashMap<String, HashMap<Integer,Integer>> masterList= new HashMap<>();
-        try{gesture=dataManager.returnGestureList();masterList=dataManager.returnMap();}catch (Exception e){e.printStackTrace();}
+        try{gesture=dataManager.returnGestureList();}catch (Exception e){e.printStackTrace();}
         Log.v("null",""+getApplicationContext());
 
-
-        SettingAdapter adapter=new SettingAdapter(getApplicationContext(),index,gesture, masterList);
-        Log.v("Adapater",""+index);
+        Collections.sort(gesture);
+        SettingAdapter adapter=new SettingAdapter(getApplicationContext(),packageName,gesture);
+        Log.v("Adapater",""+packageName);
         Log.v("Adapater",""+gesture);
-        Log.v("Adapater",""+masterList);
 
         settingsList.setAdapter(adapter);
 
@@ -77,21 +78,29 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public Drawable getAppDrawable(int index){
-        Drawable drawable=null;
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> packages = getApplicationContext().getPackageManager().queryIntentActivities( mainIntent, 0);
-        ResolveInfo AppInfo=packages.get(index);
-        drawable=AppInfo.loadIcon(getApplicationContext().getPackageManager());
-        return drawable;
+    public Drawable getAppDrawable(String packageName){
+        PackageManager pm = getApplicationContext().getPackageManager();
+        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        for(ApplicationInfo e:appList){
+            if((e.flags&ApplicationInfo.FLAG_SYSTEM )!=0)
+                continue;
+            if(packageName.equals(e.packageName)){
+                return e.loadIcon(pm);
+            }
+        }
+        return null;
     }
-    public String getAppName(int index){
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> packages = getApplicationContext().getPackageManager().queryIntentActivities( mainIntent, 0);
-        ResolveInfo AppInfo=packages.get(index);
-        return AppInfo.loadLabel(getApplicationContext().getPackageManager()).toString();
+    public String getAppName(String packageName){
+        PackageManager pm = getApplicationContext().getPackageManager();
+        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        for(ApplicationInfo e:appList){
+            if((e.flags&ApplicationInfo.FLAG_SYSTEM )!=0)
+                continue;
+            if(packageName.equals(e.packageName)){
+                return (String)e.loadLabel(pm);
+            }
+        }
+        return null;
     }
 
 
