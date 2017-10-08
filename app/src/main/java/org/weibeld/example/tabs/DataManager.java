@@ -1,8 +1,6 @@
 package org.weibeld.example.tabs;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.io.File;
@@ -15,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by user on 9/30/2017.
@@ -25,11 +22,9 @@ public class DataManager {
     //Use package Name everywher but menus
     private HashMap<String, HashMap<String,String>> masterList=new HashMap<>();
     private HashMap<String, HashMap<String,Boolean>> BooleanMasterList=new HashMap<>();
-    PackageManager pm;
     private Context context;
     public DataManager(Context c){context=c;}
     public void AddConnection(String gesture, String startingApp, String endingApp) throws IOException{
-        pm = context.getPackageManager();
         try {
             UpdateMap();
         } catch (ClassNotFoundException e) {
@@ -233,39 +228,47 @@ public class DataManager {
         temp.addAll(ListToAdd);
         WriteGesturesList(temp);
     }
-    public void initializeAppList() throws IOException {
-        PackageManager pm = context.getPackageManager();
-        int size=pm.getInstalledApplications(0).size();
-        boolean appList[] = new boolean[size];
-        FileOutputStream fos = context.openFileOutput("appList", context.MODE_PRIVATE);
-        ObjectOutputStream os = new ObjectOutputStream(fos);
-        os.writeObject(appList);
-        os.close();
-        fos.close();
-    }
-    public boolean[] returnAppList()  {
-        try{
-        FileInputStream fis = context.openFileInput("appList");
-        ObjectInputStream inputStreamStream = new ObjectInputStream(fis);
-        return (boolean[])inputStreamStream.readObject();}catch (Exception e){e.printStackTrace();}
-        return null;
-    }
-    public boolean[] filterAppList(String input){
-        try {
-            initializeAppList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        List<ApplicationInfo> appList=pm.getInstalledApplications(0);
-        boolean[] filteredList=returnAppList();
-        int i=0;
-        for(ApplicationInfo e:appList){
-            filteredList[i]=e.loadLabel(pm).toString().contains(input);
-            i++;
-        }
-        return filteredList;
-    }
+//    public void initializeAppList() throws IOException {
+//        PackageManager pm = context.getPackageManager();
+//        int size=pm.getInstalledApplications(0).size();
+//        boolean appList[] = new boolean[size];
+//        FileOutputStream fos = context.openFileOutput("appList", context.MODE_PRIVATE);
+//        ObjectOutputStream os = new ObjectOutputStream(fos);
+//        os.writeObject(appList);
+//        os.close();
+//        fos.close();
+//    }
+//    public boolean[] returnAppList()  {
+//        try{
+//        FileInputStream fis = context.openFileInput("appList");
+//        ObjectInputStream inputStreamStream = new ObjectInputStream(fis);
+//        return (boolean[])inputStreamStream.readObject();}catch (Exception e){e.printStackTrace();}
+//        return null;
+//    }
+//    public boolean[] filterAppList(String input){
+//        PackageManager pm = context.getPackageManager();
+//        try {
+//            initializeAppList();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        List<ApplicationInfo> appList=pm.getInstalledApplications(0);
+//        boolean[] filteredList=returnAppList();
+//        int i=0;
+//        for(ApplicationInfo e:appList){
+//            filteredList[i]=!e.loadLabel(pm).toString().contains(input);
+//            i++;
+//        }
+//        try{
+//        FileOutputStream fos = context.openFileOutput("appList", context.MODE_PRIVATE);
+//        ObjectOutputStream os = new ObjectOutputStream(fos);
+//        os.writeObject(filteredList);
+//        os.close();
+//        fos.close();}catch (Exception e){e.printStackTrace();}
+//        Log.v("impertant",Arrays.toString(returnAppList()));
+//        return filteredList;
+//    }
 
 
 }

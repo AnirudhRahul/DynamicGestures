@@ -2,6 +2,7 @@ package org.weibeld.example.tabs.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,21 +23,38 @@ import java.util.ArrayList;
 
 public class AppAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<App> apps;
+    private ArrayList<App> allApps=new ArrayList<>();
+    private ArrayList<App> displayedApps=new ArrayList<>();
     private LayoutInflater inflater;
     public AppAdapter(Context context, ArrayList<App> apps){
         this.context=context;
-        this.apps=apps;
+        this.allApps.addAll(apps);
+        displayedApps.addAll(apps);
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        Log.v("EntireList",allApps.toString());
+    }
+    public void filter(String a){
+        displayedApps.clear();
+        if(a.equals("")) {
+            displayedApps.addAll(allApps);
+            return;
+        }
+        a=a.toLowerCase();
+        for(int i=0;i<allApps.size();i++){
+            if(allApps.get(i).getName().toLowerCase().indexOf(a)>=0)
+            displayedApps.add(allApps.get(i));
+        }
+        Log.v("",displayedApps.toString());
+        notifyDataSetChanged();
     }
     @Override
     public int getCount() {
-        return apps.size();
+        return displayedApps.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return apps.get(i);
+        return displayedApps.get(i);
     }
 
     @Override
@@ -46,6 +64,7 @@ public class AppAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, final ViewGroup parent) {
+
         View rowView=inflater.inflate(R.layout.applayout,parent,false);
         TextView appName=(TextView) rowView.findViewById(R.id.appName);
         ImageView appIcon=(ImageView) rowView.findViewById(R.id.appIcon);

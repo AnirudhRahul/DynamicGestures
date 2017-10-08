@@ -32,8 +32,7 @@ public class AppSelectorSettings extends AppCompatActivity {
         int i=-1;
         for(ApplicationInfo e:appList){
             i++;
-            if((e.flags&ApplicationInfo.FLAG_SYSTEM )!=0)
-                continue;
+
             //Package Name, Display Name, Icon Drawable, Index
             apps.add(new App(e.packageName,(String)e.loadLabel(pm),e.loadIcon(pm),i));
         }

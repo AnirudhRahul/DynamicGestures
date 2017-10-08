@@ -12,6 +12,8 @@
     android:theme="@style/AppTheme.Custom"
     tools:context="org.weibeld.example.tabs.Fragments_and_UI.MainActivity">
 
+
+
     <android.support.design.widget.TabLayout
         app:tabTextAppearance="@style/TabLayoutStyle"
         android:elevation="5dp"

@@ -15,7 +15,9 @@ public class App implements Comparable<App> {
     public String getPackagename() {
         return packagename;
     }
-
+    public String toString(){
+        return name;
+    }
     public void setPackagename(String packagename) {
         this.packagename = packagename;
     }

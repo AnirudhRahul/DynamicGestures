@@ -8,21 +8,15 @@
       a theme inheriting from Theme.AppCompat.*.NoActionBar. This prevents the default ActionBar
       from showing up.
     -->
-    <receiver android:name=".BootBroadcastReceiver">
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-        </intent-filter>
-    </receiver>
 
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
+
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -32,11 +26,16 @@
         android:theme="@style/AppTheme">
         <service android:name=".tabs.ServiceExample" />
 
-        <application/>
+        />
 
+        <receiver android:name=".tabs.BroadCast">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".tabs.Fragments_and_UI.MainActivity"
-            android:label="@string/title_activity_app_selector_settings">
+            android:label="@string/app_name">
         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

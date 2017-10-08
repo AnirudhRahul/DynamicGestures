@@ -142,7 +142,6 @@ public class ServiceExample extends Service  {
                         float x=motionEvent.getX();
                         if(x>width/2.25){
                             Log.v("Movement","left to right swipe");
-                            Toaster("left to right swipe");
 
                             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(masterList.get("Swipe Left").get(curAppName));
                             if (launchIntent != null) {
@@ -168,9 +167,9 @@ public class ServiceExample extends Service  {
                     }
                     if(motionEvent.getAction()==MotionEvent.ACTION_UP){
                         float x=motionEvent.getX();
-                        if(x<width/2.25){
+                        Log.v("*XCOR",x+"");
+                        if(-x>width/2.25){
                             Log.v("Movement","left to right swipe");
-                            Toaster("left to right swipe");
 
                             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(masterList.get("Swipe Right").get(curAppName));
                             if (launchIntent != null) {

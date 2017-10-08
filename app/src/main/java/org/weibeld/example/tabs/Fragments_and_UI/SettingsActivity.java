@@ -82,8 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
         PackageManager pm = getApplicationContext().getPackageManager();
         List<ApplicationInfo> appList = pm.getInstalledApplications(0);
         for(ApplicationInfo e:appList){
-            if((e.flags&ApplicationInfo.FLAG_SYSTEM )!=0)
-                continue;
+
             if(packageName.equals(e.packageName)){
                 return e.loadIcon(pm);
             }
@@ -94,8 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
         PackageManager pm = getApplicationContext().getPackageManager();
         List<ApplicationInfo> appList = pm.getInstalledApplications(0);
         for(ApplicationInfo e:appList){
-            if((e.flags&ApplicationInfo.FLAG_SYSTEM )!=0)
-                continue;
+
             if(packageName.equals(e.packageName)){
                 return (String)e.loadLabel(pm);
             }
