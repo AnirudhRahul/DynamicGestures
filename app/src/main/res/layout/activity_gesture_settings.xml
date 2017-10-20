@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.weibeld.example.tabs.GestureSettings">
+<TextView
+    android:paddingTop="10dp"
+    android:paddingLeft="15dp"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:text="Width of Tab"
+    android:textColor="@color/AppTitles"
+    android:textSize="20sp"
+
+    android:id="@+id/textView" />
+<EditText
+    android:paddingTop="10dp"
+    android:layout_width="150dp"
+    android:layout_height="50dp"
+    android:layout_marginStart="16dp"
+    android:id="@+id/widthInput"
+    android:layout_below="@+id/textView"
+    android:layout_alignParentStart="true" />
+<TextView
+    android:layout_below="@id/widthInput"
+    android:id="@+id/heightLabel"
+    android:paddingLeft="15dp"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:text="Height of Tab"
+    android:textColor="@color/AppTitles"
+    android:textSize="20sp"
+
+        />
+<EditText
+    android:id="@+id/heightInput"
+    android:layout_width="150dp"
+    android:layout_height="50dp"
+    android:layout_below="@+id/heightLabel"
+    android:layout_alignStart="@+id/widthInput" />
+    <TextView
+        android:layout_below="@id/heightInput"
+        android:id="@+id/colorLabel"
+        android:paddingLeft="15dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Color"
+        android:textColor="@color/AppTitles"
+        android:textSize="20sp"
+
+        />
+    <EditText
+        android:id="@+id/colorInput"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/colorLabel"
+        android:layout_alignStart="@+id/widthInput" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restore Defaults"
+        android:id="@+id/restoreDefaults"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/colorInput" />
+</RelativeLayout>

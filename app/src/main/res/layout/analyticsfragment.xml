@@ -1,16 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Neutral">
 
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:text="Select your Launcher(Required for Analytics)"
+    android:textColor="@color/AppTitles"
+    android:id="@+id/UImessage"
+    android:textSize="18sp"
+    android:paddingLeft="12dp"
+    />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="67.5dp"
+        android:id="@+id/LauncherSelector"
+        android:layout_below="@+id/UImessage"
+        android:layout_alignParentStart="true">
+        <Button
+            android:id="@+id/selectAppBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text=""
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            />
+        <ImageView
+            android:paddingRight="12dp"
+            android:paddingLeft="5dp"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:id="@+id/LauncherIcon"
+            android:src="@mipmap/android"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            />
+        <TextView
+            android:textColor="@color/AppTitles"
+            android:layout_toRightOf="@id/LauncherIcon"
+            android:layout_width="1000dp"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:gravity="center_vertical"
+            android:text="No Launcher Selected"
+            android:id="@+id/LauncherName"
+            android:fontFamily="sans-serif"
+            android:elevation="1dp" />
+    </RelativeLayout>
+
+
     <TextView
+        android:id="@+id/reccomended"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="This is page Analytics"
-        />
+        android:textColor="@color/AppTitles"
+        android:text="Reccomended"
+        android:layout_below="@+id/LauncherSelector"
+        android:layout_alignParentStart="true" />
 
-</FrameLayout>
+</RelativeLayout>

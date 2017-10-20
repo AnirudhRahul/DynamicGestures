@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 /* Fragment used as page 2 */
 public class GesturesFragment extends Fragment {
-    final private String[] finalGestureList={"Swipe Up", "Swipe Down", "Swipe Left", "Swipe Right", "Circle", "Shake"};
+    final private String[] finalGestureList={"Left Swipe", "Right Swipe"};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

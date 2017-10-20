@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="100dp"
         android:id="@+id/gestureList"
         android:background="@color/white"
         >
-
     </ListView>
-
-</LinearLayout>
+    <TextView
+        android:layout_below="@id/gestureList"
+        android:text="Long Press to access more Settings"
+        android:textSize="15sp"
+        android:paddingLeft="10dp"
+        android:textColor="@color/AppTitles"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+</RelativeLayout>

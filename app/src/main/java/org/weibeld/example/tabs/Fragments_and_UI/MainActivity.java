@@ -26,7 +26,7 @@ import android.widget.SearchView;
 import org.weibeld.example.R;
 import org.weibeld.example.tabs.BroadCast;
 import org.weibeld.example.tabs.DataManager;
-import org.weibeld.example.tabs.ServiceExample;
+import org.weibeld.example.tabs.Services.ServiceExample;
 
 import java.io.IOException;
 
@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
     //HashMap<GestureName, HashMap<InitialAppIndex,FinalAppIndex>>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        stopService(new Intent(this, ServiceExample.class));
+        startService(new Intent(this, ServiceExample.class));
+
         DataManager dataManager=new DataManager(getApplicationContext());
         try {
             dataManager.UpdateMap();
@@ -74,10 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        startService(new Intent(this, ServiceExample.class));
-        getSupportActionBar().setElevation(0);
+
        // getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#354777\">" + getString(R.string.app_name) + "</font>"));
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        getSupportActionBar().setElevation(0);
 
     }
     @Override

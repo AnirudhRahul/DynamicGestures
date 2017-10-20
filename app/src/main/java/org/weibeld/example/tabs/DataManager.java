@@ -1,6 +1,8 @@
 package org.weibeld.example.tabs;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.io.File;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by user on 9/30/2017.
@@ -211,7 +214,7 @@ public class DataManager {
         Log.v("TAG", isGestureListInitiliazed() + "");
         if (!isGestureListInitiliazed()) {
             ArrayList<String> list = new ArrayList<>();
-            final String[] gestures = {"Swipe Up", "Swipe Down", "Swipe Left", "Swipe Right", "Circle", "Shake"};
+            final String[] gestures = {"Left Swipe", "Right Swipe"};
             list.addAll(Arrays.asList(gestures));
             WriteGesturesList(list);
         }
@@ -223,11 +226,111 @@ public class DataManager {
         Collections.sort(temp);
         return temp;
     }
-    public void appendGestureList(ArrayList<String> ListToAdd) throws IOException, ClassNotFoundException{
-        ArrayList<String> temp=returnGestureList();
-        temp.addAll(ListToAdd);
-        WriteGesturesList(temp);
+    public void initializeAppConnectionMap() throws IOException{
+        if(!isAppConnectionInitialized()){
+        Log.v("null",context==null?"null":"FINE");
+        HashMap<Short, HashMap<Short, Integer>> AppConnectionList=new HashMap<>();
+        FileOutputStream fos = context.openFileOutput("appConnectionList", context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(AppConnectionList);
+        os.close();
+        fos.close();
+        }
     }
+    public boolean isAppConnectionInitialized() throws IOException{
+        try{
+            File file = new File(context.getFilesDir(), "appConnectionList");
+            ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+            Boolean temp= is.readObject()!=null;
+            is.close();
+            return temp;
+        }
+        catch (Exception e){return false;}
+    }
+    public void logAppConnections() throws IOException, ClassNotFoundException {
+        File file = new File(context.getFilesDir(), "appConnectionList");
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+        HashMap<Short, HashMap<Short,Integer>> appConnectionsList=(HashMap<Short, HashMap<Short, Integer>>) is.readObject();
+        is.close();
+        String output="";
+        for(short e:appConnectionsList.keySet()){
+
+            output+=indexToString(e)+"\n";
+            HashMap<Short,Integer> currentMap=appConnectionsList.get(e);
+            for(short c:currentMap.keySet()){
+                output+="{"+indexToString(c)+":Times Visited "+currentMap.get(c)+"},";
+            }
+            output+="\n";
+        }
+        output+="\n";
+       // Log.v("MAPURU",output);
+        Log.v("MAPURU",returnAppConnections().toString());
+    }
+    public HashMap<String,HashMap<String,Integer>> returnAppConnections() throws IOException, ClassNotFoundException {
+        File file = new File(context.getFilesDir(), "appConnectionList");
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+        HashMap<Short, HashMap<Short,Integer>> appConnectionsList=(HashMap<Short, HashMap<Short, Integer>>) is.readObject();
+        HashMap<String,HashMap<String,Integer>> outputList=new HashMap<>();
+        is.close();
+        for(short s1:appConnectionsList.keySet()){
+            HashMap<Short,Integer> currentMap=appConnectionsList.get(s1);
+            HashMap<String,Integer> outputCurrentMap=new HashMap<>();
+            for(short s2:currentMap.keySet()){
+                outputCurrentMap.put(indexToString(s2),currentMap.get(s2));
+
+            }
+               // output+="{"+indexToString(c)+":Times Visited "+currentMap.get(c)+"},";
+
+            outputList.put(indexToString(s1),outputCurrentMap);
+
+        }
+        return outputList;
+        }
+
+    public String indexToString(short a){
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        ApplicationInfo e=appList.get(a);
+        return e.loadLabel(pm).toString();
+
+    }
+
+
+    public void addAppConnection(short startingAppIndex,short endingAppIndex) throws IOException, ClassNotFoundException {
+        if(!isAppConnectionInitialized())
+            initializeAppConnectionMap();
+            initializeAppConnectionMap();
+            FileInputStream fis = context.openFileInput("appConnectionList");
+            ObjectInputStream is = new ObjectInputStream(fis);
+            HashMap<Short, HashMap<Short, Integer>> AppConnectionList = (HashMap<Short, HashMap<Short, Integer>>) is.readObject();
+            is.close();
+            fis.close();
+            if(!AppConnectionList.containsKey(startingAppIndex)) {
+                HashMap<Short,Integer> temp=new HashMap<>();
+                temp.put(endingAppIndex,1);
+                AppConnectionList.put(startingAppIndex,temp);
+            }else {
+                HashMap<Short, Integer> startingAppMap = AppConnectionList.get(startingAppIndex);
+                if (!startingAppMap.containsKey(endingAppIndex)) {
+                    startingAppMap.put(endingAppIndex,1);
+                }
+                else{
+                    startingAppMap.put(endingAppIndex,startingAppMap.remove(endingAppIndex)+1);
+                }
+
+            }
+
+            AppConnectionList.get(startingAppIndex).get(startingAppIndex);
+        FileOutputStream fos = context.openFileOutput("appConnectionList", context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(AppConnectionList);
+        os.close();
+        fos.close();
+        //Make sure to properly Define the eqaulity for APPusage object
+       // if(AppConnectionList.get())
+    }
+
+
 //    public void initializeAppList() throws IOException {
 //        PackageManager pm = context.getPackageManager();
 //        int size=pm.getInstalledApplications(0).size();

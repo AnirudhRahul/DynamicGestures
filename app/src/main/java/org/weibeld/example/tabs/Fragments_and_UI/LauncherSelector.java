@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AppSelectorSettings extends AppCompatActivity {
-    private AppAdapterSettings adapter;
+public class LauncherSelector extends AppCompatActivity {
+    AppAdapterSettings adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_app_selector_settings);
+        setContentView(R.layout.activity_launcher_selector);
 
         ListView listView=(ListView)findViewById(R.id.listviewSecondaryAppSelector);
 
@@ -82,4 +82,5 @@ public class AppSelectorSettings extends AppCompatActivity {
 
 
 
+}
 }

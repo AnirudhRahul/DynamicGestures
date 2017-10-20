@@ -21,32 +21,47 @@ import java.util.ArrayList;
 
 public class AppAdapterSettings extends BaseAdapter {
     private Context context;
-    private ArrayList<App> apps;
+    private ArrayList<App> allApps=new ArrayList<>();
+    private ArrayList<App> displayedApps=new ArrayList<>();
     private LayoutInflater inflater;
     private int gestureIndex;
     private String starterAppPackageName;
     public AppAdapterSettings(Context context, ArrayList<App> apps,int gestureIndex, String starterAppPackageName){
         this.context=context;
-        this.apps=apps;
+        this.allApps.addAll(apps);
+        displayedApps.addAll(apps);
         this.gestureIndex=gestureIndex;
         this.starterAppPackageName=starterAppPackageName;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
     public int getCount() {
-        return apps.size();
+        return displayedApps.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return apps.get(i);
+        return displayedApps.get(i);
     }
 
     @Override
     public long getItemId(int i) {
         return i;
     }
-
+    public void filter(String a){
+        displayedApps.clear();
+        if(a.equals("")) {
+            displayedApps.addAll(allApps);
+            return;
+        }
+        a=a.toLowerCase();
+        for(int i=0;i<allApps.size();i++){
+            if(allApps.get(i).getName().toLowerCase().indexOf(a)>=0)
+                displayedApps.add(allApps.get(i));
+        }
+        Log.v("",displayedApps.toString());
+        notifyDataSetChanged();
+    }
     @Override
     public View getView(int i, View view, final ViewGroup parent) {
         View rowView=inflater.inflate(R.layout.applayout,parent,false);
