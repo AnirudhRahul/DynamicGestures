@@ -144,10 +144,20 @@ public class SettingAdapter extends BaseAdapter {
         AppIcon.setImageDrawable(getAppDrawable(initialAppPackageName));
         AppName.setText(getAppName(initialAppPackageName));
     }
-
+    public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
+        List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+        List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();
+        for(int i =0; i<installedApps.size(); i++){
+            if(context.getPackageManager().getLaunchIntentForPackage(installedApps.get(i).packageName) != null){
+                //If you're here, then this is a launch-able app
+                launchableInstalledApps.add(installedApps.get(i));
+            }
+        }
+        return launchableInstalledApps;
+    }
     public Drawable getAppDrawable(String packageName){
         PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        List<ApplicationInfo> appList = getAllInstalledApplications(context);
         for(ApplicationInfo e:appList){
 
             if(packageName.equals(e.packageName)){
@@ -158,7 +168,7 @@ public class SettingAdapter extends BaseAdapter {
     }
     public String getAppName(String packageName){
         PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        List<ApplicationInfo> appList = getAllInstalledApplications(context);
         for(ApplicationInfo e:appList){
 
             if(packageName.equals(e.packageName)){

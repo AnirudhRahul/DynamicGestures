@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }else{
         }
-
+        Intent intent=getIntent();
+        int tabIndex=intent.getIntExtra("TabIndex",0);
 
 
 
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
         // and when the ViewPager switches to a new page, the corresponding tab is selected)
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(myViewPager);
-
+        myViewPager.setCurrentItem(tabIndex);
+        myViewPager.setOffscreenPageLimit(-1);
 
 
         getSupportActionBar().setElevation(0);

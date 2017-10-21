@@ -2,7 +2,6 @@ package org.weibeld.example.tabs.Fragments_and_UI;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -30,9 +29,8 @@ public class AppsFragment extends Fragment {
         ListView listView=(ListView)rootView.findViewById(R.id.listview);
         DataManager dataManager=new DataManager(getActivity().getApplicationContext());
         PackageManager pm = context.getPackageManager();
-        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+
+        List<ApplicationInfo> appList = getAllInstalledApplications(getActivity());
 
         ArrayList<App> apps=new ArrayList<>();
         int i=-1;
@@ -51,5 +49,17 @@ public class AppsFragment extends Fragment {
     public void filterList(String a)
     {
         adapter.filter(a);
+    }
+
+    public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
+        List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+        List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();
+        for(int i =0; i<installedApps.size(); i++){
+            if(context.getPackageManager().getLaunchIntentForPackage(installedApps.get(i).packageName) != null){
+                //If you're here, then this is a launch-able app
+                launchableInstalledApps.add(installedApps.get(i));
+            }
+        }
+        return launchableInstalledApps;
     }
 }

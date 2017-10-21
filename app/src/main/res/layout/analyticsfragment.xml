@@ -6,23 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/Neutral">
 
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:text="Select your Launcher(Required for Analytics)"
-    android:textColor="@color/AppTitles"
-    android:id="@+id/UImessage"
-    android:textSize="18sp"
-    android:paddingLeft="12dp"
-    />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="67.5dp"
         android:id="@+id/LauncherSelector"
-        android:layout_below="@+id/UImessage"
         android:layout_alignParentStart="true">
         <Button
-            android:id="@+id/selectAppBtn"
+            android:id="@+id/selectLauncherBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text=""
@@ -39,6 +29,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             />
+
         <TextView
             android:textColor="@color/AppTitles"
             android:layout_toRightOf="@id/LauncherIcon"
@@ -52,14 +43,21 @@
             android:elevation="1dp" />
     </RelativeLayout>
 
-
-    <TextView
-        android:id="@+id/reccomended"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/AppTitles"
-        android:text="Reccomended"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/LauncherSelector"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
+        <TextView
+            android:id="@+id/reccomended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/AppTitles"
+            android:text="Nothing Here make sure to select your launcher"
+            android:layout_below="@+id/LauncherSelector"
+            android:layout_alignParentStart="true" />
+
+    </ScrollView>
+
 
 </RelativeLayout>

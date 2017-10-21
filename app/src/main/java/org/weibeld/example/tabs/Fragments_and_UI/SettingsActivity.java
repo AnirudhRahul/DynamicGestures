@@ -1,5 +1,6 @@
 package org.weibeld.example.tabs.Fragments_and_UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -77,10 +78,21 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
 
     }
+    public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
+        List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+        List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();
+        for(int i =0; i<installedApps.size(); i++){
+            if(context.getPackageManager().getLaunchIntentForPackage(installedApps.get(i).packageName) != null){
+                //If you're here, then this is a launch-able app
+                launchableInstalledApps.add(installedApps.get(i));
+            }
+        }
+        return launchableInstalledApps;
+    }
 
     public Drawable getAppDrawable(String packageName){
         PackageManager pm = getApplicationContext().getPackageManager();
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        List<ApplicationInfo> appList = getAllInstalledApplications(getApplicationContext());
         for(ApplicationInfo e:appList){
 
             if(packageName.equals(e.packageName)){
@@ -91,7 +103,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
     public String getAppName(String packageName){
         PackageManager pm = getApplicationContext().getPackageManager();
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        List<ApplicationInfo> appList = getAllInstalledApplications(getApplicationContext());
         for(ApplicationInfo e:appList){
 
             if(packageName.equals(e.packageName)){

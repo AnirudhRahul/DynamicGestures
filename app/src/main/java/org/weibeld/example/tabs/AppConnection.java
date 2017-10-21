@@ -46,11 +46,11 @@ public class AppConnection implements Comparable<AppConnection> {
         return (timesUsed*1.0)/totalConnectionsFromInitial;
     }
     public String toString(){
-        return initialApp+"-->"+finalApp+":"+percent();
+        return initialApp+"-->"+finalApp+":"+timesUsed;
     }
 
     @Override
     public int compareTo(@NonNull AppConnection o) {
-        return (int)(-percent()+o.percent());
+        return (int)(-timesUsed+o.timesUsed);
     }
 }

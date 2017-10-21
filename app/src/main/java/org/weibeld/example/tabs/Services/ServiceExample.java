@@ -6,6 +6,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -16,6 +17,7 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -46,7 +48,7 @@ public class ServiceExample extends Service  {
     private boolean canceled=false;
     static final int MIN_DISTANCE = 150;
     private DataManager dataManager;
-    private String launcher="com.microsoft.launcher";
+    private String launcher="";
     private HashMap<String, HashMap<String,String>> masterList=new HashMap<>();
     private HashMap<String, HashMap<String,Boolean>> BooleanMasterList=new HashMap<>();
     private ArrayList<String> usedAppList=new ArrayList<>();
@@ -80,11 +82,14 @@ public class ServiceExample extends Service  {
     @Override
     public int onStartCommand(Intent intent, final int flags, int startId)
         {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            launcher=preferences.getString("Launcher","");
+
             if(alpha.size()==0)
             for(int e:alphaValues)
                 alpha.add(e);
             PackageManager pm = getPackageManager();
-            List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+            List<ApplicationInfo> appList = getAllInstalledApplications(getApplicationContext());
             HashMap<String,String> NametoPackageName=new HashMap<>();
             for(ApplicationInfo e:appList){
                 NametoPackageName.put((String)e.loadLabel(pm),e.packageName);
@@ -307,7 +312,7 @@ public class ServiceExample extends Service  {
                  printForegroundTask();
 //                Log.v("AppStack","PrevAppName: "+prevAppName+"\nCurApp: "+curAppName);
                 }
-            }, 1000, 1000);  // every 6 seconds
+            }, 100, 100);  // every 6 seconds
             return START_STICKY;
         }
 
@@ -341,6 +346,19 @@ private int getAppIndex(String x){
     }
     return i;
 }
+
+    public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
+        List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+        List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();
+        for(int i =0; i<installedApps.size(); i++){
+            if(context.getPackageManager().getLaunchIntentForPackage(installedApps.get(i).packageName) != null){
+                //If you're here, then this is a launch-able app
+                launchableInstalledApps.add(installedApps.get(i));
+            }
+        }
+        return launchableInstalledApps;
+    }
+
 private String retrieveAppName(int x){
     return pkgAppsList.get(i).loadLabel(getApplication().getApplicationContext().getPackageManager()).toString();
 }
@@ -383,7 +401,7 @@ private String retrieveAppName(int x){
 
     public short PackageToShort(String a){
         PackageManager pm = getApplicationContext().getPackageManager();
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        List<ApplicationInfo> appList = getAllInstalledApplications(getApplicationContext());
         short counter=0;
         for(ApplicationInfo e:appList){
             //Package Name, Display Name, Icon Drawable, Index
@@ -391,9 +409,12 @@ private String retrieveAppName(int x){
                 return counter;
             counter++;
         }
+        Log.v("he123","wat:"+a);
         return -1;
     }
     public void updateAppUsageMap() throws IOException, ClassNotFoundException {
+        if(launcher.length()==0)
+            return;
         if(usedAppList.size()<3)
             return;
         while (usedAppList.size()>3)
@@ -402,7 +423,7 @@ private String retrieveAppName(int x){
         for(int i=0;i<3;i++){
             launcherArray[i]=usedAppList.get(i).equals(launcher);
         }
-        if(!launcherArray[0]&&launcherArray[1]&&!launcherArray[2])
+        if(!launcherArray[0]&&launcherArray[1]&&!launcherArray[2]&&!usedAppList.get(0).equals(usedAppList.get(2)))
             dataManager.addAppConnection(PackageToShort(usedAppList.get(0)),PackageToShort(usedAppList.get(2)));
         dataManager.logAppConnections();
     }

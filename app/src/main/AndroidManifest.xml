@@ -44,7 +44,7 @@
         <activity
             android:name=".tabs.Fragments_and_UI.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.weibeld.example.tabs.Fragments_and_UI.MainActivity" />

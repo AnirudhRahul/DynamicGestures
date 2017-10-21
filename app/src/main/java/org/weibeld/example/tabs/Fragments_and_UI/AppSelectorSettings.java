@@ -1,5 +1,6 @@
 package org.weibeld.example.tabs.Fragments_and_UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -30,7 +31,7 @@ public class AppSelectorSettings extends AppCompatActivity {
         ListView listView=(ListView)findViewById(R.id.listviewSecondaryAppSelector);
 
         PackageManager pm = getPackageManager();
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        List<ApplicationInfo> appList = getAllInstalledApplications(getApplicationContext());
 
         ArrayList<App> apps=new ArrayList<>();
         int i=-1;
@@ -51,7 +52,17 @@ public class AppSelectorSettings extends AppCompatActivity {
 
     }
 
-
+    public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
+        List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+        List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();
+        for(int i =0; i<installedApps.size(); i++){
+            if(context.getPackageManager().getLaunchIntentForPackage(installedApps.get(i).packageName) != null){
+                //If you're here, then this is a launch-able app
+                launchableInstalledApps.add(installedApps.get(i));
+            }
+        }
+        return launchableInstalledApps;
+    }
 
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater=getMenuInflater();

@@ -284,17 +284,28 @@ public class DataManager {
             outputList.put(indexToString(s1),outputCurrentMap);
 
         }
+        Log.v("he123",outputList.toString());
         return outputList;
         }
 
     public String indexToString(short a){
         PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> appList = pm.getInstalledApplications(0);
+        List<ApplicationInfo> appList = getAllInstalledApplications(context);
         ApplicationInfo e=appList.get(a);
         return e.loadLabel(pm).toString();
 
     }
-
+    public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
+        List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+        List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();
+        for(int i =0; i<installedApps.size(); i++){
+            if(context.getPackageManager().getLaunchIntentForPackage(installedApps.get(i).packageName) != null){
+                //If you're here, then this is a launch-able app
+                launchableInstalledApps.add(installedApps.get(i));
+            }
+        }
+        return launchableInstalledApps;
+    }
 
     public void addAppConnection(short startingAppIndex,short endingAppIndex) throws IOException, ClassNotFoundException {
         if(!isAppConnectionInitialized())
