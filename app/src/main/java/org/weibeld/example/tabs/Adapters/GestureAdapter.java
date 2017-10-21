@@ -16,8 +16,6 @@ import android.widget.TextView;
 import org.weibeld.example.R;
 import org.weibeld.example.tabs.DataManager;
 import org.weibeld.example.tabs.GestureSettings;
-import org.weibeld.example.tabs.Services.LeftBarService;
-import org.weibeld.example.tabs.Services.RightBarService;
 import org.weibeld.example.tabs.Services.ServiceExample;
 
 import java.util.ArrayList;
@@ -52,6 +50,22 @@ public class GestureAdapter extends BaseAdapter {
         return finalgestures.get(i);
     }
 
+
+
+
+    private void setMaxBarsRight(int a){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("MaxRightBars", a);
+        editor.apply();
+    }
+    private void setMaxBarsLeft(int a){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("MaxLeftBars", a);
+        editor.apply();
+    }
+
     @Override
     public long getItemId(int i) {
         return i;
@@ -59,29 +73,30 @@ public class GestureAdapter extends BaseAdapter {
     public void  updateService(){
         Log.v("gestureInUse",gesturesInUse.toString());
         context.stopService(new Intent(context,ServiceExample.class));
-        context.stopService(new Intent(context,LeftBarService.class));
-        context.stopService(new Intent(context,RightBarService.class));
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         if(gesturesInUse.size()==2) {
-            context.startService(new Intent(context, ServiceExample.class));
-            editor.putString("Service","Both");
+            setMaxBarsLeft(1);
+            setMaxBarsRight(1);
         }
         else if(gesturesInUse.size()==0){
-            editor.putString("Service","None");
+            setMaxBarsLeft(0);
+            setMaxBarsRight(0);
         }
         else if(gesturesInUse.get(0).equals("Left Swipe")) {
            // Log.v("gestureInUse","Left Swipe:Reached");
-            editor.putString("Service","Left");
-            context.startService(new Intent(context, LeftBarService.class));
+            setMaxBarsLeft(1);
+            setMaxBarsRight(0);
         }
         else if(gesturesInUse.get(0).equals("Right Swipe")) {
            // Log.v("gestureInUse","Right Swipe:Reached");
-            editor.putString("Service","Right");
-            context.startService(new Intent(context, RightBarService.class));
+            setMaxBarsRight(1);
+            setMaxBarsLeft(0);
         }
-        editor.apply();
+        context.startService(new Intent(context,ServiceExample.class));
+
 
 
     }

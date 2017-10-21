@@ -35,43 +35,58 @@ public class Analytics extends Fragment {
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
     TextView textView;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String name = preferences.getString("Launcher", "");
+
+            if(name.length()==0){
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                builder1.setMessage("Please select your default launcher (Home app)\nThis is required to generate our Analytics");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton(
+                        "Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder1.setNegativeButton(
+                        "What is my Home App?",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                                    final Intent intent = new Intent(Settings.ACTION_HOME_SETTINGS);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    final Intent intent = new Intent(Settings.ACTION_HOME_SETTINGS);
+                                    startActivity(intent);
+                                }
+
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();}
+
+
+
+        }
+        else {
+        }
+    }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String name = preferences.getString("Launcher", "");
-        if(name.length()==0){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-        builder1.setMessage("Please select your default launcher (Home app)\nThis is required to generate our Analytics");
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                "Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        builder1.setNegativeButton(
-                "What is my Home App?",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                            final Intent intent = new Intent(Settings.ACTION_HOME_SETTINGS);
-                            startActivity(intent);
-                        }
-                        else {
-                            final Intent intent = new Intent(Settings.ACTION_HOME_SETTINGS);
-                            startActivity(intent);
-                        }
-
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();}
-
-
-
 
         View rootView = inflater.inflate(R.layout.analyticsfragment, container, false);
         textView= (TextView) rootView.findViewById(R.id.reccomended);

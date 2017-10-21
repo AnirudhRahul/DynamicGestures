@@ -214,7 +214,7 @@ public class DataManager {
         Log.v("TAG", isGestureListInitiliazed() + "");
         if (!isGestureListInitiliazed()) {
             ArrayList<String> list = new ArrayList<>();
-            final String[] gestures = {"Left Swipe", "Right Swipe"};
+            final String[] gestures={};
             list.addAll(Arrays.asList(gestures));
             WriteGesturesList(list);
         }

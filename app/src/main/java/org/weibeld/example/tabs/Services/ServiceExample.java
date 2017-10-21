@@ -54,6 +54,10 @@ public class ServiceExample extends Service  {
     private ArrayList<String> usedAppList=new ArrayList<>();
     private List<ApplicationInfo> appList;
     List<ResolveInfo> pkgAppsList;
+    int numberOfBarsLeft;
+    int numberOfBarsRight;
+    int maxBarsLeft;
+    int maxBarsRight;
     int[] alphaValues={32,64,80,96,112,128,192,0};
     private ArrayList<Integer> alpha=new ArrayList<>();
     @Override
@@ -82,6 +86,10 @@ public class ServiceExample extends Service  {
     @Override
     public int onStartCommand(Intent intent, final int flags, int startId)
         {
+            final int[] numberOfBarsLeft = {getCurrentLeftBarNumber()};
+            final int[] numberOfBarsRight = {getCurrentRightBarNumber()};
+            int maxBarsLeft=getMaxBarsLeft();
+            int maxBarsRight=getMaxBarsRight();
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             launcher=preferences.getString("Launcher","");
 
@@ -226,9 +234,10 @@ public class ServiceExample extends Service  {
                 }
             });
             WMparams.verticalMargin=(float)0;
-
-                mWindowManager.addView(LeftVerticalBar, WMparams);
-
+                while (numberOfBarsLeft[0]<maxBarsLeft) {
+                    mWindowManager.addView(LeftVerticalBar, WMparams);
+                    numberOfBarsLeft[0]++;
+                }
             WMparams.gravity = Gravity.RIGHT ;
             RightVerticalBar.setOnTouchListener(new View.OnTouchListener() {
                 float y1=0;
@@ -293,7 +302,20 @@ public class ServiceExample extends Service  {
                 }
             });
 
+                while (numberOfBarsRight[0]<maxBarsRight){
                 mWindowManager.addView(RightVerticalBar, WMparams);
+                numberOfBarsRight[0]++;}
+            writeBarNumbers();
+            while(numberOfBarsLeft[0] >maxBarsLeft){
+                mWindowManager.removeView(LeftVerticalBar);
+                numberOfBarsLeft[0]--;
+            }
+            while(numberOfBarsRight[0] >maxBarsRight){
+                mWindowManager.removeView(RightVerticalBar);
+                numberOfBarsRight[0]--;
+            }
+
+
 
 
 
@@ -306,8 +328,13 @@ public class ServiceExample extends Service  {
                 {
                 if(canceled) {
                     timer.cancel();
+                    while(numberOfBarsRight[0]>0){
                     mWindowManager.removeView(RightVerticalBar);
+                    numberOfBarsRight[0]--;}
+                    while(numberOfBarsLeft[0]>0){
                     mWindowManager.removeView(LeftVerticalBar);
+                    numberOfBarsLeft[0]--;}
+                    writeBarNumbers();
                 }
                  printForegroundTask();
 //                Log.v("AppStack","PrevAppName: "+prevAppName+"\nCurApp: "+curAppName);
@@ -324,7 +351,41 @@ public class ServiceExample extends Service  {
     }
 //USE ACCESSIBILITY SERVICE
 
-
+private void writeBarNumbers(){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    SharedPreferences.Editor editor = preferences.edit();
+    editor.putInt("CurrentRightBars", numberOfBarsRight);
+    editor.putInt("CurrentLeftBars", numberOfBarsLeft);
+    editor.apply();
+}
+private int getCurrentLeftBarNumber(){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    return preferences.getInt("CurrentLeftBars",0);
+}
+private int getCurrentRightBarNumber(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getInt("CurrentRightBars",0);
+}
+private int getMaxBarsRight(){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    return preferences.getInt("MaxRightBars",0);
+}
+private int getMaxBarsLeft(){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    return preferences.getInt("MaxLeftBars",0);
+}
+private void setMaxBarsRight(int a){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    SharedPreferences.Editor editor = preferences.edit();
+    editor.putInt("MaxRightBars", a);
+    editor.apply();
+}
+private void setMaxBarsLeft(int a){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    SharedPreferences.Editor editor = preferences.edit();
+    editor.putInt("MaxLeftBars", a);
+    editor.apply();
+}
 private void Toaster(final String x){
     Handler handler = new Handler(Looper.getMainLooper());
 
