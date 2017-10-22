@@ -1,5 +1,6 @@
 package org.weibeld.example.tabs.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -77,10 +78,15 @@ public class AppAdapter extends BaseAdapter {
                 Intent i=new Intent(parent.getContext(), SettingsActivity.class);
                 i.putExtra("AppId",a);
                 parent.getContext().startActivity(i);
+                ((Activity) parent.getContext()).overridePendingTransition(R.animator.popout,R.animator.nothing);
+
             }
         });
         appName.setText(app.getName());
         appIcon.setImageDrawable(app.getIcon());
         return rowView;
     }
+
+
+
 }

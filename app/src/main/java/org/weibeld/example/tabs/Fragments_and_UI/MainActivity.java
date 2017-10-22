@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new BroadCast();
         registerReceiver(mReceiver, filter);
-
+        Log.v("MainActu","preViewPager");
         // Connect the ViewPager to our custom PagerAdapter. The PagerAdapter supplies the pages
         // (fragments) to the ViewPager, which the ViewPager needs to display.
         myViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -98,10 +98,10 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(myViewPager);
         myViewPager.setCurrentItem(tabIndex);
-        myViewPager.setOffscreenPageLimit(-1);
-
+        myViewPager.setOffscreenPageLimit(2);
 
         getSupportActionBar().setElevation(0);
+        Log.v("MainActu","postViewPager");
 
     }
     @Override

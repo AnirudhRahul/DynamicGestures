@@ -101,7 +101,6 @@ public class ServiceExample extends Service  {
             HashMap<String,String> NametoPackageName=new HashMap<>();
             for(ApplicationInfo e:appList){
                 NametoPackageName.put((String)e.loadLabel(pm),e.packageName);
-                Log.v("AppListu",e.packageName+" "+e.loadLabel(pm));
             }
 
             dataManager=new DataManager(getApplicationContext());
@@ -273,6 +272,7 @@ public class ServiceExample extends Service  {
                             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(nextAppPackageName);
                             if (launchIntent != null) {
                                 startActivity(launchIntent);//null pointer check in case package name was not found
+                                if(nextAppPackageName!=null)
                                 if(!nextAppPackageName.equals(usedAppList.get(usedAppList.size()-1)))
                                usedAppList.add(nextAppPackageName);
 

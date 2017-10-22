@@ -37,8 +37,15 @@ public class Analytics extends Fragment {
     TextView textView;
 
     @Override
+    public void onResume(){
+        super.onResume();
+        new RetrieveMapTask().execute();
+
+    }
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        Log.v("PingPing","Ping");
         if (isVisibleToUser) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String name = preferences.getString("Launcher", "");
@@ -77,8 +84,7 @@ public class Analytics extends Fragment {
 
 
         }
-        else {
-        }
+
     }
 
 
@@ -111,6 +117,7 @@ public class Analytics extends Fragment {
                     break;
                 }
             }
+//            Log.v("stalling","UI Inited");
             new RetrieveMapTask().execute();
         }
         return rootView;
@@ -152,6 +159,7 @@ public class Analytics extends Fragment {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            Log.v("stalling","Map Retrieved");
             for(String a:appConnectionsMap.keySet()){
                 int total=0;
                 for (String b:appConnectionsMap.get(a).keySet()){

@@ -34,6 +34,9 @@
 
         <activity
             android:name=".tabs.Fragments_and_UI.MainActivity"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,18 +46,24 @@
         </activity>
         <activity
             android:name=".tabs.Fragments_and_UI.SettingsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme">
+            android:theme="@style/noActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.weibeld.example.tabs.Fragments_and_UI.MainActivity" />
         </activity>
         <activity
             android:name=".tabs.Fragments_and_UI.AppSelectorSettings"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_app_selector_settings"
             android:theme="@style/AppTheme" />
         <activity android:name=".tabs.GestureSettings" />
-        <activity android:name=".tabs.Fragments_and_UI.LauncherSelector"></activity>
+        <activity android:name=".tabs.Fragments_and_UI.LauncherSelector">
+
+        </activity>
     </application>
 
 </manifest>

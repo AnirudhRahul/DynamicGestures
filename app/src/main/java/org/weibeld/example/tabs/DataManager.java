@@ -23,12 +23,14 @@ import java.util.List;
 
 public class DataManager {
     //Use package Name everywher but menus
-    private HashMap<String, HashMap<String,String>> masterList=new HashMap<>();
+    private HashMap<String, HashMap<String,String>> masterList=new HashMap<String, HashMap<String,String>>();
     private HashMap<String, HashMap<String,Boolean>> BooleanMasterList=new HashMap<>();
     private Context context;
     public DataManager(Context c){context=c;}
     public void AddConnection(String gesture, String startingApp, String endingApp) throws IOException{
         try {
+            Log.v("LIST_READ",""+!masterList.containsValue(gesture));
+            if(!masterList.containsValue(gesture))
             UpdateMap();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -36,33 +38,20 @@ public class DataManager {
         HashMap<String,String> temp=masterList.remove(gesture);
         temp.put(startingApp,endingApp);
         masterList.put(gesture,temp);
-        WriteMap();
+        WriteMap(masterList);
     }
     public void UpdateMap() throws IOException,ClassNotFoundException{
         if(!IsMapInitialized()) {
             ArrayList<String> list = returnGestureList();
             for (String e : list)
                 masterList.put(e, new HashMap<String, String>());
-            WriteMap();
+            WriteMap(masterList);
         }
         else{
             FileInputStream fis = context.openFileInput("map");
             ObjectInputStream inputStreamStream = new ObjectInputStream(fis);
             masterList=(HashMap)inputStreamStream.readObject();
-            ArrayList<String> keyset=new ArrayList<>();
-            keyset.addAll(masterList.keySet());
-            ArrayList<String> gesture=returnGestureList();
 
-            ArrayList<String> intersection = new ArrayList<String>(keyset);
-            intersection.retainAll(gesture);
-            keyset.removeAll(intersection);
-            gesture.removeAll(intersection);
-            for(String e:gesture){
-                masterList.put(e, new HashMap<String, String>());
-            }
-            for(String e:keyset){
-                masterList.remove(e);
-            }
             fis.close();
             inputStreamStream.close();
 
@@ -84,10 +73,10 @@ public class DataManager {
 
     }
 
-    public void WriteMap() throws IOException{
+    public void WriteMap(HashMap<String, HashMap<String,String>> a) throws IOException{
         FileOutputStream fos = context.openFileOutput("map", context.MODE_PRIVATE);
         ObjectOutputStream outputStream = new ObjectOutputStream(fos);
-        outputStream.writeObject(masterList);
+        outputStream.writeObject(a);
         outputStream.flush();
         outputStream.close();
     }
@@ -248,22 +237,22 @@ public class DataManager {
         catch (Exception e){return false;}
     }
     public void logAppConnections() throws IOException, ClassNotFoundException {
-        File file = new File(context.getFilesDir(), "appConnectionList");
-        ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
-        HashMap<Short, HashMap<Short,Integer>> appConnectionsList=(HashMap<Short, HashMap<Short, Integer>>) is.readObject();
-        is.close();
-        String output="";
-        for(short e:appConnectionsList.keySet()){
-
-            output+=indexToString(e)+"\n";
-            HashMap<Short,Integer> currentMap=appConnectionsList.get(e);
-            for(short c:currentMap.keySet()){
-                output+="{"+indexToString(c)+":Times Visited "+currentMap.get(c)+"},";
-            }
-            output+="\n";
-        }
-        output+="\n";
-       // Log.v("MAPURU",output);
+//        File file = new File(context.getFilesDir(), "appConnectionList");
+//        ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+//        HashMap<Short, HashMap<Short,Integer>> appConnectionsList=(HashMap<Short, HashMap<Short, Integer>>) is.readObject();
+//        is.close();
+//        String output="";
+//        for(short e:appConnectionsList.keySet()){
+//
+//            output+=indexToString(e)+"\n";
+//            HashMap<Short,Integer> currentMap=appConnectionsList.get(e);
+//            for(short c:currentMap.keySet()){
+//                output+="{"+indexToString(c)+":Times Visited "+currentMap.get(c)+"},";
+//            }
+//            output+="\n";
+//        }
+//        output+="\n";
+//       // Log.v("MAPURU",output);
         Log.v("MAPURU",returnAppConnections().toString());
     }
     public HashMap<String,HashMap<String,Integer>> returnAppConnections() throws IOException, ClassNotFoundException {
@@ -272,29 +261,31 @@ public class DataManager {
         HashMap<Short, HashMap<Short,Integer>> appConnectionsList=(HashMap<Short, HashMap<Short, Integer>>) is.readObject();
         HashMap<String,HashMap<String,Integer>> outputList=new HashMap<>();
         is.close();
+        Log.v("stalling","ShortMap read");
+
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> appList = getAllInstalledApplications(context);
+
         for(short s1:appConnectionsList.keySet()){
             HashMap<Short,Integer> currentMap=appConnectionsList.get(s1);
             HashMap<String,Integer> outputCurrentMap=new HashMap<>();
             for(short s2:currentMap.keySet()){
-                outputCurrentMap.put(indexToString(s2),currentMap.get(s2));
-
+                try {
+                    outputCurrentMap.put(appList.get(s2).loadLabel(pm).toString(), currentMap.get(s2));
+                }catch (Exception e){}
             }
                // output+="{"+indexToString(c)+":Times Visited "+currentMap.get(c)+"},";
-
-            outputList.put(indexToString(s1),outputCurrentMap);
+            try{
+            outputList.put(appList.get(s1).loadLabel(pm).toString(),outputCurrentMap);}catch (Exception e){}
 
         }
+        Log.v("stalling","ShortMap Converted");
+
         Log.v("he123",outputList.toString());
         return outputList;
         }
 
-    public String indexToString(short a){
-        PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> appList = getAllInstalledApplications(context);
-        ApplicationInfo e=appList.get(a);
-        return e.loadLabel(pm).toString();
 
-    }
     public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
         List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
         List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();

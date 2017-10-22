@@ -43,7 +43,11 @@ public class SettingAdapter extends BaseAdapter {
     private HashMap<String,HashMap<String,String>> masterList=new HashMap<>();
     private HashMap<String,HashMap<String,Boolean>> BooleanMasterList=new HashMap<>();
     private String initialAppPackageName;
+    PackageManager pm;
+    List<ApplicationInfo> appList;
     public SettingAdapter(Context context, String initialAppPackageName, ArrayList<String> gestures){
+        pm = context.getPackageManager();
+        appList = getAllInstalledApplications(context);
         dataManager=new DataManager(context);
         this.context=context;
         this.gestures=gestures;
@@ -78,7 +82,6 @@ public class SettingAdapter extends BaseAdapter {
         TextView Gesture=(TextView)rowView.findViewById(R.id.gestureName);
         Gesture.setText(gestures.get(i));
         Button selectAppBtn=(Button)rowView.findViewById(R.id.selectAppBtn);
-        Log.v("SettingAdapter",gestures.get(i)+"\t"+masterList.get(gestures.get(i)).get(initialAppPackageName));
         final RelativeLayout AppSelector=(RelativeLayout)rowView.findViewById(R.id.appSelectorSection);
         Switch UsingGesture=(Switch)rowView.findViewById(R.id.gestureUsed);
         UsingGesture.setChecked(BooleanMasterList.get(gestures.get(i)).containsKey(initialAppPackageName)&&BooleanMasterList.get(gestures.get(i)).get(initialAppPackageName));
@@ -93,8 +96,9 @@ public class SettingAdapter extends BaseAdapter {
         UsingGesture.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 collapse(AppSelector,1);
-                Log.v("HEIGHTU",""+AppSelector.getHeight());
-                try{dataManager.AddToBooleanMap(gestures.get(a),initialAppPackageName,isChecked); Log.v("mapu",dataManager.returnBooleanMap().toString());}catch(Exception e){Log.v("SettingAdapter","Error");e.printStackTrace();}
+                Log.v("SettingStall","Collapsed");
+                try{dataManager.AddToBooleanMap(gestures.get(a),initialAppPackageName,isChecked);}catch(Exception e){}
+                Log.v("SettingStall","Boolean Map updated");
 
                 String curPackageName="";
                 try{
@@ -105,6 +109,7 @@ public class SettingAdapter extends BaseAdapter {
                 catch (Exception e){
 
                 }
+                Log.v("SettingStall","Row Is Set");
 
 
 
@@ -118,6 +123,7 @@ public class SettingAdapter extends BaseAdapter {
                 i.putExtra("GestureIndex",a);
                 i.putExtra("StartingApp",initialAppPackageName);
                 parent.getContext().startActivity(i);
+
             }
         });
 
@@ -144,8 +150,8 @@ public class SettingAdapter extends BaseAdapter {
         AppIcon.setImageDrawable(getAppDrawable(initialAppPackageName));
         AppName.setText(getAppName(initialAppPackageName));
     }
-    public static List<ApplicationInfo> getAllInstalledApplications(Context context) {
-        List<ApplicationInfo> installedApps = context.getPackageManager().getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+    public  List<ApplicationInfo> getAllInstalledApplications(Context context) {
+        List<ApplicationInfo> installedApps = pm.getInstalledApplications(PackageManager.PERMISSION_GRANTED);
         List<ApplicationInfo> launchableInstalledApps = new ArrayList<ApplicationInfo>();
         for(int i =0; i<installedApps.size(); i++){
             if(context.getPackageManager().getLaunchIntentForPackage(installedApps.get(i).packageName) != null){
@@ -156,8 +162,7 @@ public class SettingAdapter extends BaseAdapter {
         return launchableInstalledApps;
     }
     public Drawable getAppDrawable(String packageName){
-        PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> appList = getAllInstalledApplications(context);
+
         for(ApplicationInfo e:appList){
 
             if(packageName.equals(e.packageName)){
@@ -167,8 +172,7 @@ public class SettingAdapter extends BaseAdapter {
         return null;
     }
     public String getAppName(String packageName){
-        PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> appList = getAllInstalledApplications(context);
+
         for(ApplicationInfo e:appList){
 
             if(packageName.equals(e.packageName)){

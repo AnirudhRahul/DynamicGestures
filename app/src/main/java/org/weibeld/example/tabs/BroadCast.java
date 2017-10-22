@@ -4,12 +4,8 @@ import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.weibeld.example.tabs.Services.LeftBarService;
-import org.weibeld.example.tabs.Services.RightBarService;
 import org.weibeld.example.tabs.Services.ServiceExample;
 
 /**
@@ -22,16 +18,8 @@ public class BroadCast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         globContext=context;
-        Class service=null;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String serviceName = preferences.getString("Service", "");
-        if(serviceName.equals("Both")||serviceName.equals(""))
-            service=ServiceExample.class;
-        if(serviceName.equals("Left"))
-            service=LeftBarService.class;
-        if(serviceName.equals("Right"))
-            service=RightBarService.class;
-        Intent i=new Intent(context, service);
+
+        Intent i=new Intent(context, ServiceExample.class);
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             // DO WHATEVER YOU NEED TO DO HERE
             context.stopService(i);
